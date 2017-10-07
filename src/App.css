@@ -84,3 +84,8 @@ h1 {
     color: #F44336;
 }
 
+@media only screen and (max-device-width: 460px) {
+    html, body {
+        font-size: 10px;
+    }
+}

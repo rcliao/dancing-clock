@@ -70,7 +70,7 @@ class ClockApp extends Component {
       rythm.stop();
     } else {
       rythm.addRythm('vanish', 'vanish', 0, 10);
-      rythm.setMusic('/rythmC.mp3');
+      rythm.setMusic('rythmC.mp3');
       rythm.start();
     }
     this.setState({dancing: newState});
