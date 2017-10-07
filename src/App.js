@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import Rythm from 'rythm.js'
+import Mousetrap from 'mousetrap';
+
 import './App.css';
 import Clock from './Clock';
-import Rythm from 'rythm.js'
 
 const rythm = new Rythm();
 const DAY = 86400000;
@@ -81,18 +83,19 @@ class ClockApp extends Component {
       () => this.tick(),
       1000
     );
-    document.addEventListener('keydown', this.handleKeybinds);
+    Mousetrap.bind('s', this.handleKeybinds);
+    Mousetrap.bind('up up down down left right left right b a enter',() => {
+      this.toggleDance();
+    })
   }
 
   componentWillUnmount() {
     clearInterval(this.timerID);
-    document.removeEventListener('keydown', this.handleKeybinds);
+    Mousetrap.unbind('s', this.handleKeybinds);
   }
 
   handleKeybinds(event) {
-    if (event.keyCode === 83) { // s for settings
-      this.setState({hideControl: !this.state.hideControl});
-    }
+    this.setState({hideControl: !this.state.hideControl});
   }
 
   tick() {
@@ -122,6 +125,8 @@ class ClockApp extends Component {
     msg.voice = voices[10]; // Note: some voices don't support altering params
     msg.voiceURI = 'native';
     msg.volume = 1; // 0 to 1
+    msg.rate = 1;
+    msg.pitch = 2;
     msg.text = message;
     msg.lang = 'en-US';
 
@@ -184,7 +189,9 @@ class ClockApp extends Component {
           <input id="title" type="text" value={this.state.title} onChange={this.handleTitleChange}/>
 
           <label htmlFor="due">Due: </label>
-          <input id="due" type="time" value={this.getDueInHoursMinutes()} onChange={this.handleDueChange} />
+          <input id="due" type="time"
+            defaultValue={this.getDueInHoursMinutes()}
+            onBlur={this.handleDueChange} />
         </div>
       </div>
     );
