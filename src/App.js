@@ -108,11 +108,6 @@ class ClockApp extends Component {
     if (this.props.reminders.includes(minuteDiff) && !this.reminderStorage.isReminderAnnounced(minuteDiff)) {
       this.speak('You have ' + minuteDiff + ' minutes left until the ' + this.state.title + ' is due.', () => {
         this.speak('Again. You have ' + minuteDiff + ' minutes left until the ' + this.state.title + ' is due.', () => {
-          if (minuteDiff === this.props.reminders[0]) {
-            if (!this.state.dancing) {
-              this.toggleDance(true);
-            }
-          }
         });
       });
       this.reminderStorage.setReminderDone(minuteDiff);
@@ -120,15 +115,7 @@ class ClockApp extends Component {
   }
 
   speak(message, cb) {
-    const msg = new window.SpeechSynthesisUtterance();
-    const voices = window.speechSynthesis.getVoices();
-    msg.voice = voices[10]; // Note: some voices don't support altering params
-    msg.voiceURI = 'native';
-    msg.volume = 1; // 0 to 1
-    msg.rate = 1;
-    msg.pitch = 2;
-    msg.text = message;
-    msg.lang = 'en-US';
+    const msg = new window.SpeechSynthesisUtterance(message);
 
     msg.onend = function(e) {
       cb();
